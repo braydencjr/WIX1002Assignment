@@ -1,0 +1,5 @@
+TaskID,Title,Description,DueDate,IsCompleted,Category,Priority,RecurrenceInterval,CurrentDate,Dependencies
+1,jog,run,2024-12-22,false,,false,weekly,2024-12-15,
+2,"Viva1,2","finish,submit",2024-12-16,false,homework,medium,,2024-12-15,
+3,haha,oi,2025-01-01,false,personal,high,,2024-12-15,
+4,"FOP,DS",assignment/tutorial,2025-01-01,false,homework,high,,2024-12-18,
