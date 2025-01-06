@@ -798,7 +798,7 @@ public class FOP_Assignment {
 
     
     public static void saveTasksToFile() {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\USER\\Documents\\NetBeansProjects\\FOP_Assignment_Gmail\\src\\main\\java\\com\\netbeans\\fop_assignment_gmail\\Task.csv"))) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/fop_assignment/Task.csv"))) {
         // Write header
         writer.write("TaskID,Title,Description,DueDate,IsCompleted,Category,Priority,RecurrenceInterval,CurrentDate,Dependencies");
         writer.newLine();
@@ -850,7 +850,7 @@ public class FOP_Assignment {
         // Clear existing list before loading
         list.clear();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\USER\\Documents\\NetBeansProjects\\FOP_Assignment_Gmail\\src\\main\\java\\com\\netbeans\\fop_assignment_gmail\\Task.csv"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/fop_assignment/Task.csv"))) {
             // Skip header line
             String line = reader.readLine();
     
