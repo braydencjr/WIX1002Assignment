@@ -132,18 +132,22 @@ public class SecondPageController {
         });
 
         dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == saveButtonType) {
-                return new Task(
-                        titleField.getText(),
-                        descriptionField.getText(),
-                        dueDatePicker.getValue().toString(),
-                        categoryBox.getValue(),
-                        priorityBox.getValue(),
-                        LocalDate.now().toString()
-                );
+        if (dialogButton == saveButtonType) {
+            if (titleField.getText().trim().isEmpty()) {
+                showAlert("Title cannot be empty!");
+                return null;
             }
-            return null;
-        });
+            return new Task(
+                    titleField.getText(),
+                    descriptionField.getText(),
+                    dueDatePicker.getValue().toString(),
+                    categoryBox.getValue(),
+                    priorityBox.getValue(),
+                    LocalDate.now().toString()
+            );
+        }
+        return null;
+    });
 
         return dialog.showAndWait().orElse(null);
     }
