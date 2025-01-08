@@ -1,6 +1,6 @@
 TaskID,Title,Description,DueDate,IsCompleted,Category,Priority,RecurrenceInterval,CurrentDate,Dependencies
-1,jog,run,2024-12-22,false,,false,weekly,2024-12-15,
-2,"Viva1,2","finish,submit",2024-12-16,false,homework,medium,,2024-12-15,
-3,haha,oi,2025-01-01,false,personal,high,,2024-12-15,
-4,"FOP,DS",assignment/tutorial,2025-01-01,false,homework,high,,2024-12-18,
-5,cso ,presentation,2025-01-07,false,work,high,,2025-01-06,
+1,VIVA 3,,2025-01-08,false,Homework,Medium,,2025-01-08,
+2,CSO ASSIGNMENT,FINISH,2025-01-08,false,Homework,Medium,,2025-01-08,
+3,cso ,presentation,2025-01-07,false,work,high,,2025-01-06,
+4,Computiong Math,,2025-01-01,false,personal,high,,2024-12-15,
+5,"FOP,DS",assignment/tutorial,2025-01-01,false,homework,high,,2024-12-18,
