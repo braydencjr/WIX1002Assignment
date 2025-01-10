@@ -284,9 +284,15 @@ public class FOP_Assignment {
     public static void deleteTask(){
         viewAllTask();
         System.out.println("\n=== Delete a Task ===");
+        System.out.println("Enter 0 to cancel");
         System.out.print("Enter the task number you want to delete: ");
         int numDelete = sc.nextInt() - 1;
-        if(numDelete >= 0 && numDelete < list.size()){
+        
+        if(numDelete == -1){
+            System.out.println("Operation is cancelled");
+        }
+        
+        else if(numDelete >= 0 && numDelete < list.size()){
             System.out.println("Task " + "\"" + list.get(numDelete).getTitle() + "\" deleted successfully!");
             list.remove(numDelete);            
         }
@@ -452,77 +458,123 @@ public class FOP_Assignment {
         return date.toString();
     }
     
-    //Method to set task dependencies
+    //Method to set Task Dependency
     public static void taskDependency() {
-        System.out.println("=== Set Task Dependencies ===");
-        viewAllTask();
-
-        Task dependentTask;
-        while (true) {
-            System.out.print("Enter the task number that depends on another task:  ");
-            int taskIndex = sc.nextInt() - 1;
-            if (taskIndex >= 0 && taskIndex < list.size()) {
-                dependentTask = list.get(taskIndex);
-                break;
-            } 
-            else {
-                System.out.println("Invalid task number. Please choose again.");
-            }
-        }
-
-        Task precedingTask;
-        while (true) {
-            System.out.print("Enter the task number it depends on:  ");
-            int taskIndex = sc.nextInt() - 1;
-            if (taskIndex >= 0 && taskIndex < list.size() && taskIndex != list.indexOf(dependentTask)) {
-                precedingTask = list.get(taskIndex);
-                if (detectCycle(dependentTask.getTaskId(), precedingTask.getTaskId())) {
-                    System.out.println("Error: This dependency would create a cycle. Please choose another task.");
-                } 
-                else {
-                    break;
-                }
-            } 
-            else if (taskIndex == list.indexOf(dependentTask)) {
-                System.out.println("Error: Task cannot depend on itself.");
-            } 
-            else {
-                System.out.println("Invalid task number. Please choose again.");
-            }
-        }
-
-        dependentTask.addDependency(precedingTask.getTaskId());
-        System.out.println("Task \"" + dependentTask.getTitle() + "\" now depends on \"" + precedingTask.getTitle() + "\".");
+    System.out.println("=== Set Task Dependencies ===");
+    
+    // First check if we have enough tasks
+    if (list.size() < 2) {
+        System.out.println("Error: Need at least 2 tasks to set dependencies.");
         System.out.println();
+        return;
+    }
+    
+    viewAllTask();
+    System.out.println("\nEnter 0 at any time to cancel the operation.");
+
+    Task dependentTask;
+    while (true) {
+        System.out.print("Enter the task number that depends on another task: ");
+        int taskIndex = sc.nextInt() - 1;
+        
+        // Check for cancel operation
+        if (taskIndex == -1) {
+            System.out.println("Operation cancelled.");
+            System.out.println();
+            return;
+        }
+        
+        if (taskIndex >= 0 && taskIndex < list.size()) {
+            dependentTask = list.get(taskIndex);
+            break;
+        } else {
+            System.out.println("Invalid task number. Please choose again.");
+        }
     }
 
-    // Modify cycle detection to use taskId
-    public static boolean detectCycle(int dependentTaskId, int precedingTaskId) {
-        // Find tasks by their ID instead of index
-        Task dependentTask = findTaskById(dependentTaskId);
-        ArrayList<Integer> visited = new ArrayList<>();
-        return isCyclic(dependentTask, visited, precedingTaskId);
+    // Check if there are any available tasks to depend on
+    boolean availableDependencies = false;
+    for (Task task : list) {
+        if (task != dependentTask && !wouldCreateCycle(task, dependentTask)) {
+            availableDependencies = true;
+            break;
+        }
     }
 
-    private static boolean isCyclic(Task currentTask, ArrayList<Integer> visited, int precedingTaskId) {
-        if (visited.contains(currentTask.getTaskId())) {
+    if (!availableDependencies) {
+        System.out.println("Error: No available tasks to set as dependency. Setting a dependency would create a cycle.");
+        System.out.println();
+        return;
+    }
+
+    Task precedingTask;
+    while (true) {
+        System.out.print("Enter the task number it depends on: ");
+        int taskIndex = sc.nextInt() - 1;
+        
+        // Check for cancel operation
+        if (taskIndex == -1) {
+            System.out.println("Operation cancelled.");
+            System.out.println();
+            return;
+        }
+
+        if (taskIndex >= 0 && taskIndex < list.size()) {
+            if (taskIndex == list.indexOf(dependentTask)) {
+                System.out.println("Error: Task cannot depend on itself.");
+                continue;
+            }
+            precedingTask = list.get(taskIndex);
+            
+            if (wouldCreateCycle(precedingTask, dependentTask)) {
+                System.out.println("Error: This dependency would create a cycle. Please choose another task or enter 0 to cancel.");
+                continue;
+            }
+            break;
+        } else {
+            System.out.println("Invalid task number. Please choose again or enter 0 to cancel.");
+        }
+    }
+
+    dependentTask.addDependency(precedingTask.getTaskId());
+    System.out.println("Task \"" + dependentTask.getTitle() + "\" now depends on \"" + precedingTask.getTitle() + "\".");
+    System.out.println();
+}
+
+    // Method to check if adding a dependency would create a cycle
+    private static boolean wouldCreateCycle(Task precedingTask, Task dependentTask) {
+        // Check if the preceding task depends on the dependent task (direct cycle)
+        if (precedingTask.getDependencies().contains(dependentTask.getTaskId())) {
             return true;
         }
 
-        visited.add(currentTask.getTaskId());
+        // Check for indirect cycles using DFS
+        ArrayList<Integer> visited = new ArrayList<>();
+        return hasPathTo(precedingTask, dependentTask.getTaskId(), visited);
+    }
 
-        for (int i = 0; i < currentTask.getDependencies().size(); i++) {
-            Integer dependencyId = currentTask.getDependencies().get(i);
-            Task dependency = findTaskById(dependencyId);
-            if (isCyclic(dependency, visited, precedingTaskId)){
+    // Helper method to check if there's a path from start task to target task ID
+    private static boolean hasPathTo(Task startTask, int targetTaskId, ArrayList<Integer> visited) {
+        if (visited.contains(startTask.getTaskId())) {
+            return false;
+        }
+
+        visited.add(startTask.getTaskId());
+
+        // Check all dependencies of the current task
+        for (int dependencyId : startTask.getDependencies()) {
+            if (dependencyId == targetTaskId) {
+                return true;
+            }
+
+            Task dependencyTask = findTaskById(dependencyId);
+            if (dependencyTask != null && hasPathTo(dependencyTask, targetTaskId, visited)) {
                 return true;
             }
         }
 
-        visited.remove((Integer) currentTask.getTaskId());
         return false;
-    }   
-
+    }
     // Helper method to find a task by its ID
     private static Task findTaskById(int taskId) {
         for (int i = 0; i < list.size(); i++) {
@@ -707,17 +759,23 @@ public class FOP_Assignment {
         int homeworkCount = 0;
         int personalCount = 0;
         int workCount = 0;
+        int recurringCount = 0;
         
         for (Task task : list) {
-            String category = task.getCategory(); 
             totalTasks++;
-            if (category != null) {
-                if (task.isCompleted()) {
+            
+            if (task.isCompleted()) {
                     completedTasks++;
                 } else {
                     pendingTasks++;
                 }
-               
+            
+            if(task.getRecurrenceInterval() != null){
+                recurringCount++;
+            }
+            
+            String category = task.getCategory(); 
+            if (category != null) {
                 switch (category.toLowerCase()) {
                     case "homework":
                         homeworkCount++;
@@ -742,7 +800,7 @@ public class FOP_Assignment {
         System.out.println("- Completed: " + completedTasks);
         System.out.println("- Pending: " + pendingTasks);
         System.out.printf("- Completion Rate: %.2f%%%n", completionRate);
-        System.out.println("- Task Categories: Homework: " + homeworkCount + ", Personal: " + personalCount+ ", Work: " + workCount);
+        System.out.println("- Task Categories: Homework: " + homeworkCount + ", Personal: " + personalCount+ ", Work: " + workCount + ", Recurring: " + recurringCount);
         System.out.println();
         
     }
@@ -753,15 +811,16 @@ public class FOP_Assignment {
             LocalDate reminderDate = dueDate.minusDays(1);
             LocalDate currentDate = LocalDate.now();
             String reminderTask = list.get(i).getTitle();
+            String description = list.get(i).getDescription();
             boolean isCompleted = list.get(i).isCompleted();
             
             if(reminderDate.equals(currentDate) && !isCompleted){
-                sendEmail(email,reminderTask);
+                sendEmail(email,reminderTask, dueDate, description);
             }
         }
     }
     
-    public static void sendEmail(String toEmail, String taskName) {
+    public static void sendEmail(String toEmail, String taskName, LocalDate dueDate, String description) {
         String fromEmail = "braydencjr05@gmail.com"; // Your Gmail address
         String password = "kdqh puov yjuc qbvx";    // Use App Password
 
@@ -785,7 +844,12 @@ public class FOP_Assignment {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
             message.setSubject("Task Reminder: " + taskName);
             message.setText("=== Email Notification ===\n" +
-                    "Sending reminder email for task \"" + taskName + "\" due in 24 hours.");
+                    "Sending reminder email for task \"" + taskName + "\" due in 24 hours." +
+
+                    "\n\nTask Title: " + taskName +
+                    "\nDescription: " + description +
+                    "\nDue Date: " + dueDate +
+                    "\n\nPlease ensure it's completed on time!");
 
             // Send message
             Transport.send(message);
@@ -839,7 +903,7 @@ public class FOP_Assignment {
 
     private static String formatCSV(String value) {
         if (value == null) return ""; // Handle null values
-        value = value.replace("\"", "\"\""); // Escape double quotes
+        value = value.replace("\"", "\"\""); // Escape double quotes 
         if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
             return "\"" + value + "\""; // Wrap in quotes if necessary
         }
@@ -901,7 +965,7 @@ public class FOP_Assignment {
         }
         return value.replace("\"\"", "\""); // Unescape double quotes
     }
-
+ 
     private static String[] splitCSVLine(String line) {
         // Split CSV into exactly 10 parts
         String[] result = new String[10];
