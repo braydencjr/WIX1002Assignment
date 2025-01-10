@@ -44,7 +44,7 @@
                               <TextField fx:id="nameTextField" prefWidth="150.0" />
                            </children>
                         </HBox>
-                        <Button fx:id="startButton" mnemonicParsing="false" onAction="#login" prefWidth="150.0" style="-fx-background-color: #18a7ad;" text="Get Started!">
+                        <Button fx:id="startButton" mnemonicParsing="false" onAction="#login" prefWidth="150.0" text="Get Started!">
                            <font>
                               <Font name="Cambria" size="13.0" />
                            </font>
