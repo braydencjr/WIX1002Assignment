@@ -14,7 +14,7 @@ public class Task{
     private String currentDate;
     private ArrayList<Integer> dependencies;
     private static int nextId = 1;  // Static variable to generate unique IDs
-    private final int taskId;  // Unique identifier for each task
+    private final int taskId;  // Unique identifier for each task, so the dependencies list will not be disrupted when sorting is done
     private boolean isRecurring;
     
     //Constructor with all features of a task (without recurrence)
@@ -128,7 +128,7 @@ public class Task{
     }
     
     public static void resetNextId() {
-    nextId = 1;
+        nextId = 1;
     }
     
     @Override

@@ -314,7 +314,7 @@ public class FOP_Assignment {
         
         switch(numSort){
             case 1:
-                //Buble sort by due date(ascending)
+                //Bubble sort by due date(ascending)
                 for(int pass=0 ; pass<list.size() ; pass++){
                     for(int i=0 ; i<list.size()-1 ; i++){
                         if(list.get(i).getDueDate().compareTo(list.get(i+1).getDueDate()) > 0){
@@ -329,7 +329,7 @@ public class FOP_Assignment {
                 break;
             
             case 2:
-                //Buble sort by due date(descending)
+                //Bubble sort by due date(descending)
                 for(int pass=0 ; pass<list.size() ; pass++){
                     for(int i=0 ; i<list.size()-1 ; i++){
                         if(list.get(i).getDueDate().compareTo(list.get(i+1).getDueDate()) < 0){
