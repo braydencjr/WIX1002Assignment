@@ -1,8 +1,3 @@
 TaskID,Title,Description,DueDate,IsCompleted,Category,Priority,RecurrenceInterval,CurrentDate,Dependencies
-1,FOP presentation,,2025-01-15,false,homework,high,,2025-01-10,9
-2,fop submission,assignment,2025-01-10,false,homework,high,,2025-01-10,
-3,I depends on 4,,2026-01-01,false,work,high,,2025-01-10,5
-4,I depends on 3,,2026-01-01,false,work,low,,2025-01-10,
-5,Finish Assignment,WIX1002,2025-01-15,true,homework,high,,2025-01-10,
-6,Grocery Shopping,Go buy some fruits,2025-01-12,true,personal,medium,,2025-01-10,
-7,Jog,30 mins,2025-01-17,false,,Medium,weekly,2025-01-10,
+1,Fop Presentation,,2026-01-01,false,homework,high,,2025-01-13,
+2,Prepare script,2026-01-01,2026-01-01,false,work,high,,2025-01-13,

@@ -14,7 +14,7 @@ public class Task{
     private String currentDate;
     private ArrayList<Integer> dependencies;
     private static int nextId = 1;  // Static variable to generate unique IDs
-    private final int taskId;  // Unique identifier for each task, so the dependencies list will not be disrupted when sorting is done
+    private int taskId;  // Unique identifier for each task, so the dependencies list will not be disrupted when sorting is done
     private boolean isRecurring;
     
     //Constructor with all features of a task (without recurrence)
@@ -127,8 +127,14 @@ public class Task{
         return taskId;
     }
     
-    public static void resetNextId() {
-        nextId = 1;
+    // Add a new method to set taskId directly (for loading from file)
+    public void setTaskId(int id) {
+        // This is a special case method only used when loading from file
+        this.taskId = id;
+        // Update nextId to be greater than the highest ID loaded
+        if (id >= nextId) {
+            nextId = id + 1;
+        }
     }
     
     @Override

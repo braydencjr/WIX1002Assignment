@@ -917,13 +917,11 @@ public class FOP_Assignment {
         try (BufferedReader reader = new BufferedReader(new FileReader("src/fop_assignment/Task.csv"))) {
             // Skip header line
             String line = reader.readLine();
-    
-            // Reset the static nextId to ensure no ID conflicts when loading
-            Task.resetNextId();
-    
+            
             while ((line = reader.readLine()) != null) {
                 String[] parts = splitCSVLine(line);
-
+                
+                // Create task with basic constructor
                 Task task = new Task(
                     unformatCSV(parts[1]),  // Title
                     unformatCSV(parts[2]),  // Description
@@ -932,6 +930,10 @@ public class FOP_Assignment {
                     unformatCSV(parts[6]),  // Priority
                     unformatCSV(parts[8])   // CurrentDate
                 );
+                
+                // Set the original task ID from the file
+                int originalId = Integer.parseInt(parts[0]);
+                task.setTaskId(originalId);
 
                 // Handle recurring tasks
                 if (!parts[7].isEmpty()) {
@@ -946,12 +948,12 @@ public class FOP_Assignment {
                 // Parse dependencies if any
                 if (parts.length > 9 && !parts[9].isEmpty()) {
                     String[] dependencies = parts[9].split("\\|");
-                    for (int i = 0; i < dependencies.length; i++) {
-                        task.addDependency(Integer.parseInt(dependencies[i]));
+                    for (String dep : dependencies) {
+                        task.addDependency(Integer.parseInt(dep.trim()));
                     }
                 }
 
-                list.add(task); // Add task to the list
+                list.add(task);
             }
         } catch (IOException e) {
             System.out.println("Error loading tasks: " + e.getMessage());
