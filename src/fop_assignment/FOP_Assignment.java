@@ -554,6 +554,7 @@ public class FOP_Assignment {
     }
 
     // Helper method to check if there's a path from start task to target task ID
+    //Start Task is Preceding Task
     private static boolean hasPathTo(Task startTask, int targetTaskId, ArrayList<Integer> visited) {
         if (visited.contains(startTask.getTaskId())) {
             return false;

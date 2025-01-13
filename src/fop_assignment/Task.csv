@@ -1,3 +1,5 @@
 TaskID,Title,Description,DueDate,IsCompleted,Category,Priority,RecurrenceInterval,CurrentDate,Dependencies
-1,Fop Presentation,,2026-01-01,false,homework,high,,2025-01-13,
-2,Prepare script,2026-01-01,2026-01-01,false,work,high,,2025-01-13,
+1,Fop Presentation,,2026-01-01,false,homework,high,,2025-01-13,2
+2,Prepare script,2026-01-01,2026-01-01,false,work,high,,2025-01-13,3
+3,Math Revision,Set 1,2026-01-01,false,homework,medium,,2025-01-13,
+4,hi,hi,2026-01-01,false,personal,high,,2025-01-13,
