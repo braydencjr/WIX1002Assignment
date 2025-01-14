@@ -1,5 +1,6 @@
 TaskID,Title,Description,DueDate,IsCompleted,Category,Priority,RecurrenceInterval,CurrentDate,Dependencies
-1,Fop Presentation,,2026-01-01,false,homework,high,,2025-01-13,2
-2,Prepare script,2026-01-01,2026-01-01,false,work,high,,2025-01-13,3
-3,Math Revision,Set 1,2026-01-01,false,homework,medium,,2025-01-13,
-4,hi,hi,2026-01-01,false,personal,high,,2025-01-13,
+10,Math Revision,Set 1,3000-12-03,false,homework,medium,,2025-01-14,
+11,Shopping,,2025-01-22,false,personal,low,,2025-01-14,
+8,Complete Past Year Papers,FOP,2025-01-31,false,homework,medium,,2025-01-14,
+9,FOP Final Test,,2025-02-04,false,homework,high,,2025-01-14,
+16,Jog,30mins,2025-01-28,false,,Medium,weekly,2025-01-14,

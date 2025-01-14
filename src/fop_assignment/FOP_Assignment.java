@@ -12,8 +12,18 @@ import java.util.regex.Pattern;
 
 public class FOP_Assignment {
     public static void main(String[] args) {
-        System.out.print("Please enter your email address(xxxxxx@gmail.com): ");
-        String email = sc.nextLine();
+        String email;
+        while(true){
+            System.out.print("Please enter your email address(xxxxxx@gmail.com): ");
+            email = sc.nextLine();
+            String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{3,}$";
+            boolean validEmail = Pattern.matches(emailRegex, email);
+            if(!validEmail){
+                System.out.println("Invalid email address. Please Enter Again");
+            }
+            else
+                break;
+        }
         
         loadTasksFromFile();
         while(true){
